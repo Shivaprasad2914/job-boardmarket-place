@@ -1,0 +1,137 @@
+<!-- jobs/templates/register.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* General styling for the registration form */
+    body{
+        overflow: hidden;
+    }
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    margin-left: 430px;
+    background-color: #f0f2f5; /* Light background for the page */
+}
+
+.register-card {
+    background-color: #fff;
+    padding:0 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Limit the width */
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 1rem;
+    color: #333;
+}
+
+input.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+input.form-control:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none;
+}
+
+input.form-check-input {
+    margin-left: 0;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+</style>
+    <div class="register-container">
+        <div class="register-card">
+            <h2>Register</h2>
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+
+                <!-- Password field -->
+                <div class="form-group">
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" id="password1" class="form-control" required>
+                </div>
+
+                <!-- Confirm Password field -->
+                <div class="form-group">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" name="password2" id="password2" class="form-control" required>
+                </div>
+
+                <!-- Employer Checkbox -->
+                <div class="form-group">
+                    <label for="is_employer">Employer</label>
+                    <input type="radio" value='employee'name="is_employer" id="is_employer" class="form-check-input">
+                    <label for="is_employer">Seeker</label>
+                    <input type="radio" value="'seeker" name="is_employer" id="is_employer" class="form-check-input">
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+
+            <div class="login-link">
+                <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
