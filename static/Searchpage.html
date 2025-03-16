@@ -1,0 +1,132 @@
+<!-- jobs/templates/job_search.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    
+.job-listings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.job-posting {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.job-posting:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.job-title {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.job-details p {
+    margin: 8px 0;
+    color: #555;
+}
+form {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    margin-top: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+</style>
+    <h2>Job Search</h2>
+
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'job_search' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" name="location" id="location" class="form-control" value="{{ request.GET.location }}">
+        </div>
+
+        <div class="form-group">
+            <label for="job_type">Job Type</label>
+            <select name="job_type" id="job_type" class="form-control">
+                <option value="">--Select Job Type--</option>
+                <option value="Full-time" {% if request.GET.job_type == "Full-time" %}selected{% endif %}>Full-time</option>
+                <option value="Part-time" {% if request.GET.job_type == "Part-time" %}selected{% endif %}>Part-time</option>
+                <option value="Freelance" {% if request.GET.job_type == "Freelance" %}selected{% endif %}>Freelance</option>
+                <option value="Internship" {% if request.GET.job_type == "Internship" %}selected{% endif %}>Internship</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="skills">Skills Required</label>
+            <input type="text" name="skills" id="skills" class="form-control" value="{{ request.GET.skills }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+{% if search %}
+    <h3>Search Results:</h3>
+    {% if jobs %}
+        <ul>
+            {% for job_posting in jobs %}
+            <div class="job-posting">
+                <h2 class="job-title">{{ job_posting.title }}</h2>
+                <div class="job-details">
+                    <p><strong>Location:</strong> {{ job_posting.location }}</p>
+                    <p><strong>Description:</strong> {{ job_posting.description }}</p>
+                    <p><strong>Salary:</strong> {{ job_posting.salary }}</p>
+                    <p><strong>Job Type:</strong> {{ job_posting.job_type }}</p>
+                    <p><strong>Skills Required:</strong> {{ job_posting.skills_required }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No jobs found matching your search criteria.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}
